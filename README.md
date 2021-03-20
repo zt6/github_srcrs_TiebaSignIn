@@ -14,8 +14,7 @@
 # 功能
 
 + 贴吧签到(最多支持 200 个)
-
-+ 支持推送运行结果至微信(通过 server 酱)
++ 支持推送运行结果至微信(通过 server 酱)、企业微信（企业微信API）、Telegram
 
 # 使用方法
 
@@ -29,9 +28,9 @@
 
 ## 3.将BDUSS添加到仓库的Secrets中
 
-Name | Value
--|-
-BDUSS | xxxxxxxxxxx
+| Name  | Value       |
+| ----- | ----------- |
+| BDUSS | xxxxxxxxxxx |
 
 将上一步骤获取到的`BDUSS`粘贴到`Secrets`中
 
@@ -66,7 +65,30 @@ BDUSS | xxxxxxxxxxx
 
 Name | Value
 -|-
-SCKEY | xxxxxxxxxx
+PUSHINFO | ft=`SCKEY` 
+
+## 添加Telegram推送
+
+需在Secrets中添加Telegram的`chat_id`和`bot_token`，格式如下
+
+| Name     | Value                    |
+| -------- | ------------------------ |
+| PUSHINFO | tg=`chat_id`,`bot_token` |
+
+## 添加企业微信推送
+
+参考[Server酱Turbo的文档](https://sct.ftqq.com/forward)注册企业微信并创建内部应用。
+
+需在Secrets中添加企业微信的`企业ID`、应用`Secret`、应用`AgentId`、接收消息的成员（默认为`@all`向该企业应用的全部成员发送）
+
+| Name     | Value                                 |
+| -------- | ------------------------------------- |
+| PUSHINFO | qywx=`企业ID`,`Secret`,@all,`AgentId` |
+
+## 2021-03-21
+
+- 增加Telegram推送
+- 增加企业微信推送，可以推送至微信
 
 ## 2020-11-01
 
