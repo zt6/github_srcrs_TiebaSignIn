@@ -29,6 +29,6 @@ jobs:
     - name: Build with Maven
       env:
         BDUSS: ${{ secrets.BDUSS }}
-        SCKEY: ${{ secrets.SCKEY }}
+        PUSHINFO: ${{ secrets.PUSHINFO }}
       run: |
-        mvn compile exec:java -Dexec.mainClass="top.srcrs.Run" -Dexec.args="${BDUSS} ${SCKEY}"
+        mvn compile exec:java -Dexec.mainClass="top.srcrs.Run" -Dexec.args="${BDUSS} ${PUSHINFO}"
