@@ -230,9 +230,9 @@ public class Run {
      */
     public void send(String pushInfo) {
         // 将要推送的数据
-        String text = "总: " + followNum + " - ";
-        text += "成功: " + success.size() + " 失败: " + (followNum - success.size());
-        String desp = "TiebaSignIn运行结果\n\n" + text;
+        String text = "共有：" + followNum + " - ";
+        text += "成功：" + success.size() + " 失败：" + (followNum - success.size());
+        String desp = "TiebaSignIn 运行结果：\n\n" + text;
 
         // 推送的方式和所需信息
         String pushType = pushInfo.split("=")[0];
@@ -241,6 +241,26 @@ public class Run {
         HttpClient httpClient = HttpClients.createDefault();
 
         switch (pushType) {
+            case "pushplus": {
+                // pushplus
+                try {
+                    URIBuilder builder = new URIBuilder("http://www.pushplus.plus/send/"+pushKey);
+                    builder.addParameter("title", text);
+                    builder.addParameter("content", desp);
+
+                    HttpResponse response = doGet(httpClient, builder.build());
+                    String responseJson = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+                    Map<String, String> jsonMap = JSON.parseObject(responseJson, new TypeReference<Map<String, String>>() {
+                    });
+                    if (Integer.parseInt(jsonMap.get("code")) != 200) {
+                        throw new HttpException("code:" + jsonMap.get("code"));
+                    }
+                    LOGGER.info("pushplus 推送成功");
+                } catch (Exception e) {
+                    LOGGER.error("pushplus 推送失败：" + e.toString());
+                }
+                break;
+            }
             case "ft": {
                 // 方糖
                 try {
